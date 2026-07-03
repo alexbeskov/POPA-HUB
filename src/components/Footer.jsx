@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Zap, Github, Twitter, MessageCircle } from 'lucide-react';
+import { Zap, Code2, Send, MessageCircle } from 'lucide-react';
 import './Footer.css';
 
 export default function Footer() {
@@ -29,8 +29,8 @@ export default function Footer() {
           </div>
           <div className="footer__col">
             <h4>Соцсети</h4>
-            <a href="#" target="_blank" rel="noopener noreferrer"><Github size={14} /> GitHub</a>
-            <a href="#" target="_blank" rel="noopener noreferrer"><Twitter size={14} /> Twitter / X</a>
+            <a href="#" target="_blank" rel="noopener noreferrer"><Code2 size={14} /> GitHub</a>
+            <a href="#" target="_blank" rel="noopener noreferrer"><Send size={14} /> Twitter / X</a>
             <a href="#" target="_blank" rel="noopener noreferrer"><MessageCircle size={14} /> Discord</a>
           </div>
         </div>
