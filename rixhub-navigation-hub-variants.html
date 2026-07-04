@@ -1,0 +1,970 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RixHub navigation and hub variants</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #03080d;
+        --panel: rgba(7, 18, 27, 0.72);
+        --soft: rgba(255, 255, 255, 0.035);
+        --line: rgba(174, 239, 255, 0.15);
+        --line-strong: rgba(46, 235, 223, 0.28);
+        --cyan: #28eedf;
+        --green: #75ff67;
+        --blue: #3d8bff;
+        --violet: #8f7bff;
+        --gold: #ffd76b;
+        --text: #effcff;
+        --muted: #91a6b5;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 12% 0%, rgba(117, 255, 103, 0.22), transparent 30%),
+          radial-gradient(circle at 88% 3%, rgba(18, 107, 255, 0.34), transparent 36%),
+          linear-gradient(180deg, rgba(0, 214, 184, 0.17), transparent 42%),
+          var(--bg);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      .page {
+        width: min(1240px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 44px 0 84px;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      .intro {
+        margin-bottom: 30px;
+      }
+
+      .intro span {
+        display: inline-flex;
+        padding: 8px 12px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--cyan);
+        background: rgba(7, 18, 27, 0.56);
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      h1 {
+        max-width: 900px;
+        margin-top: 15px;
+        font-size: clamp(36px, 5vw, 70px);
+        line-height: 0.98;
+      }
+
+      .intro p {
+        max-width: 790px;
+        margin-top: 14px;
+        color: #b7c8d3;
+        font-size: 18px;
+        line-height: 1.45;
+      }
+
+      .variant {
+        margin-top: 32px;
+        padding: 24px;
+        border: 1px solid rgba(174, 239, 255, 0.12);
+        border-radius: 32px;
+        background:
+          radial-gradient(circle at 46% 0%, rgba(117, 255, 103, 0.07), transparent 42%),
+          rgba(255, 255, 255, 0.018);
+      }
+
+      .variant-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 18px;
+      }
+
+      .variant-head h2 {
+        font-size: clamp(28px, 3vw, 42px);
+        line-height: 1;
+      }
+
+      .variant-head p {
+        max-width: 520px;
+        color: var(--muted);
+        line-height: 1.45;
+        text-align: right;
+      }
+
+      .screen {
+        min-height: 680px;
+        padding: 24px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 30px;
+        background:
+          radial-gradient(circle at 18% 0%, rgba(117, 255, 103, 0.15), transparent 32%),
+          radial-gradient(circle at 84% 0%, rgba(61, 139, 255, 0.25), transparent 36%),
+          rgba(3, 11, 17, 0.72);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: #f2ffff;
+        font-size: 21px;
+        font-weight: 900;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        place-items: center;
+        border: 1px solid rgba(46, 235, 223, 0.3);
+        border-radius: 13px;
+        color: var(--cyan);
+        background: rgba(46, 235, 223, 0.08);
+        font-size: 14px;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .nav a,
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        padding: 0 14px;
+        border-radius: 999px;
+        color: #8fa4b2;
+        font-size: 14px;
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      .nav a.active,
+      .pill.active {
+        color: #041012;
+        background: var(--cyan);
+      }
+
+      .lang {
+        display: inline-flex;
+        gap: 4px;
+        padding: 4px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(7, 18, 27, 0.58);
+      }
+
+      .lang span {
+        display: grid;
+        min-width: 38px;
+        min-height: 34px;
+        place-items: center;
+        border-radius: 999px;
+        color: #8497a5;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .lang span:first-child {
+        color: #031014;
+        background: var(--cyan);
+      }
+
+      .hub-title {
+        margin-top: 38px;
+        color: #f3ffff;
+        font-size: clamp(42px, 6vw, 76px);
+        line-height: 0.95;
+      }
+
+      .hub-note {
+        max-width: 640px;
+        margin-top: 12px;
+        color: rgba(184, 201, 210, 0.78);
+        font-size: 15px;
+        line-height: 1.55;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 28px;
+      }
+
+      .card {
+        display: flex;
+        min-height: 230px;
+        flex-direction: column;
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 26px;
+        background:
+          radial-gradient(circle at 48% -12%, rgba(46, 235, 223, 0.1), transparent 44%),
+          rgba(6, 16, 24, 0.62);
+      }
+
+      .card.big {
+        grid-column: span 3;
+        min-height: 270px;
+      }
+
+      .card.small {
+        grid-column: span 2;
+      }
+
+      .badge {
+        display: grid;
+        width: 60px;
+        height: 60px;
+        place-items: center;
+        border: 1px solid rgba(46, 235, 223, 0.2);
+        border-radius: 20px;
+        color: var(--cyan);
+        background:
+          radial-gradient(circle at 26% 18%, rgba(117, 255, 103, 0.12), transparent 36%),
+          rgba(46, 235, 223, 0.055);
+        font-weight: 950;
+      }
+
+      .card h3 {
+        margin-top: 26px;
+        font-size: 28px;
+        line-height: 1.05;
+      }
+
+      .card p {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.45;
+      }
+
+      .cta {
+        width: fit-content;
+        margin-top: auto;
+        padding: 10px 15px;
+        border: 1px solid rgba(117, 255, 103, 0.22);
+        border-radius: 999px;
+        color: #d4ffc9;
+        background: rgba(117, 255, 103, 0.08);
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        min-height: 72px;
+        padding: 0 18px 0 22px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: rgba(7, 18, 27, 0.72);
+      }
+
+      .v1 .nav {
+        margin-left: auto;
+      }
+
+      .v2 .screen {
+        display: grid;
+        grid-template-columns: 245px 1fr;
+        gap: 22px;
+      }
+
+      .side {
+        display: flex;
+        min-height: 100%;
+        flex-direction: column;
+        gap: 24px;
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 26px;
+        background: rgba(7, 18, 27, 0.7);
+      }
+
+      .side-nav {
+        display: grid;
+        gap: 8px;
+      }
+
+      .side-nav a {
+        padding: 13px 14px;
+        border-radius: 16px;
+        color: #90a4b3;
+        font-weight: 850;
+        text-decoration: none;
+      }
+
+      .side-nav a.active {
+        color: #041012;
+        background: var(--cyan);
+      }
+
+      .side-foot {
+        margin-top: auto;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .v3 .topbar {
+        justify-content: center;
+      }
+
+      .commandbar {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 18px;
+        width: min(860px, 100%);
+        min-height: 68px;
+        padding: 0 16px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(7, 18, 27, 0.76);
+      }
+
+      .search {
+        padding: 13px 16px;
+        border: 1px solid rgba(46, 235, 223, 0.14);
+        border-radius: 999px;
+        color: #7f94a4;
+        background: rgba(255, 255, 255, 0.025);
+        font-weight: 800;
+      }
+
+      .v3 .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .command-row {
+        display: grid;
+        grid-template-columns: 64px 1fr auto;
+        align-items: center;
+        gap: 18px;
+        min-height: 98px;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: rgba(7, 18, 27, 0.64);
+      }
+
+      .command-row strong {
+        font-size: 24px;
+      }
+
+      .command-row p {
+        color: var(--muted);
+      }
+
+      .v4 .topbar {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+      }
+
+      .v4 .nav {
+        justify-content: center;
+        padding: 6px;
+        border: 1px solid rgba(174, 239, 255, 0.1);
+        border-radius: 999px;
+        background: rgba(3, 11, 17, 0.48);
+      }
+
+      .v4 .grid {
+        grid-template-columns: repeat(12, 1fr);
+      }
+
+      .v4 .card:nth-child(1) {
+        grid-column: span 5;
+      }
+
+      .v4 .card:nth-child(2) {
+        grid-column: span 4;
+      }
+
+      .v4 .card:nth-child(3) {
+        grid-column: span 3;
+      }
+
+      .v4 .card:nth-child(4) {
+        grid-column: span 7;
+      }
+
+      .v4 .card:nth-child(5) {
+        grid-column: span 5;
+      }
+
+      .v5 .screen {
+        display: grid;
+        grid-template-columns: 1fr 0.85fr;
+        gap: 22px;
+      }
+
+      .v5 .topbar {
+        margin-bottom: 0;
+      }
+
+      .v5 .left-panel {
+        display: grid;
+        align-content: start;
+      }
+
+      .v5 .right-panel {
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background: rgba(7, 18, 27, 0.58);
+      }
+
+      .v5 .right-panel .card {
+        min-height: 96px;
+        margin-top: 12px;
+      }
+
+      .v6 .topbar {
+        border-radius: 999px;
+      }
+
+      .dock {
+        display: flex;
+        width: fit-content;
+        gap: 8px;
+        margin: 26px auto 0;
+        padding: 8px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(7, 18, 27, 0.72);
+      }
+
+      .dock span {
+        padding: 11px 15px;
+        border-radius: 999px;
+        color: #90a4b3;
+        font-size: 14px;
+        font-weight: 900;
+      }
+
+      .dock span:first-child {
+        color: #041012;
+        background: var(--cyan);
+      }
+
+      .v6 .grid {
+        margin-top: 36px;
+      }
+
+      .fullbleed {
+        width: 100vw;
+        margin-left: calc(50% - 50vw);
+        padding: 34px max(24px, calc((100vw - 1240px) / 2));
+        border-top: 1px solid rgba(174, 239, 255, 0.1);
+        border-bottom: 1px solid rgba(174, 239, 255, 0.1);
+        background:
+          radial-gradient(circle at 14% 0%, rgba(117, 255, 103, 0.18), transparent 30%),
+          radial-gradient(circle at 86% 6%, rgba(61, 139, 255, 0.24), transparent 34%),
+          rgba(2, 9, 14, 0.42);
+      }
+
+      .fullbleed .topbar {
+        width: min(1180px, 100%);
+        margin: 0 auto;
+      }
+
+      .full-inner {
+        width: min(1180px, 100%);
+        margin: 0 auto;
+        padding: 44px 0 26px;
+      }
+
+      .full-kicker {
+        display: inline-flex;
+        padding: 8px 12px;
+        border: 1px solid rgba(46, 235, 223, 0.16);
+        border-radius: 999px;
+        color: rgba(40, 238, 223, 0.88);
+        background: rgba(7, 18, 27, 0.46);
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .full-title {
+        max-width: 780px;
+        margin-top: 18px;
+        font-size: clamp(42px, 6vw, 82px);
+        line-height: 0.94;
+      }
+
+      .full-note {
+        max-width: 680px;
+        margin-top: 16px;
+        color: rgba(184, 201, 210, 0.78);
+        font-size: 16px;
+        line-height: 1.55;
+      }
+
+      .full-grid {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 34px;
+      }
+
+      .full-grid .card:nth-child(1),
+      .full-grid .card:nth-child(2) {
+        grid-column: span 3;
+      }
+
+      .full-grid .card:nth-child(n + 3) {
+        grid-column: span 2;
+      }
+
+      .v7-full .topbar {
+        background: transparent;
+        backdrop-filter: none;
+        border-color: transparent;
+        box-shadow: none;
+      }
+
+      .v7-full .nav {
+        padding: 6px;
+        border: 1px solid rgba(174, 239, 255, 0.12);
+        border-radius: 999px;
+        background: rgba(7, 18, 27, 0.58);
+      }
+
+      .v8-full .fullbleed {
+        display: grid;
+        grid-template-columns: minmax(260px, 300px) 1fr;
+        gap: 28px;
+      }
+
+      .v8-full .topbar {
+        width: auto;
+        min-height: 620px;
+        align-items: stretch;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 22px;
+      }
+
+      .v8-full .nav {
+        display: grid;
+        margin-top: 24px;
+      }
+
+      .v8-full .lang {
+        width: fit-content;
+        margin-top: auto;
+      }
+
+      .v8-full .full-inner {
+        width: 100%;
+        padding-top: 22px;
+      }
+
+      .v9-full .fullbleed {
+        min-height: 720px;
+      }
+
+      .v9-full .topbar {
+        justify-content: center;
+        border-radius: 999px;
+      }
+
+      .v9-full .dock {
+        margin: 30px 0 0;
+      }
+
+      .v10-full .fullbleed {
+        min-height: 760px;
+        background:
+          linear-gradient(rgba(174, 239, 255, 0.045) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(174, 239, 255, 0.045) 1px, transparent 1px),
+          radial-gradient(circle at 16% 0%, rgba(117, 255, 103, 0.18), transparent 30%),
+          radial-gradient(circle at 84% 7%, rgba(61, 139, 255, 0.24), transparent 34%),
+          rgba(2, 9, 14, 0.42);
+        background-size: 56px 56px, 56px 56px, auto, auto, auto;
+      }
+
+      .v10-full .topbar {
+        border-radius: 999px;
+      }
+
+      .v10-full .full-inner {
+        display: grid;
+        grid-template-columns: 0.82fr 1.18fr;
+        gap: 34px;
+        align-items: start;
+      }
+
+      .v10-full .full-grid {
+        margin-top: 0;
+      }
+
+      .v10-full .full-grid .card:nth-child(n) {
+        grid-column: span 3;
+      }
+
+      @media (max-width: 900px) {
+        .variant-head {
+          display: grid;
+        }
+
+        .variant-head p {
+          text-align: left;
+        }
+
+        .screen,
+        .v2 .screen,
+        .v5 .screen {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar,
+        .v4 .topbar,
+        .commandbar {
+          grid-template-columns: 1fr;
+          height: auto;
+          padding: 16px;
+          border-radius: 24px;
+        }
+
+        .nav,
+        .v4 .nav,
+        .dock {
+          flex-wrap: wrap;
+          justify-content: flex-start;
+        }
+
+        .grid,
+        .v4 .grid,
+        .full-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .card.big,
+        .card.small,
+        .v4 .card:nth-child(n),
+        .full-grid .card:nth-child(n),
+        .v10-full .full-grid .card:nth-child(n) {
+          grid-column: auto;
+        }
+
+        .v8-full .fullbleed,
+        .v10-full .full-inner {
+          grid-template-columns: 1fr;
+        }
+
+        .v8-full .topbar {
+          min-height: auto;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .page {
+          width: min(100% - 24px, 1240px);
+          padding-top: 28px;
+        }
+
+        .variant,
+        .screen {
+          padding: 16px;
+          border-radius: 24px;
+        }
+
+        .grid,
+        .v4 .grid,
+        .full-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .command-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="intro">
+        <span>RixHub / варианты меню + разделов</span>
+        <h1>Как можно полностью переосмыслить верхнюю менюшку и хаб</h1>
+        <p>
+          Это отдельный статичный файл без функций. Основной сайт не меняется. Смотри на композицию:
+          где находится RixHub, как выглядят Home / Тир-лист / Промпты и как под ними живут разделы хаба.
+        </p>
+      </section>
+
+      <section class="variant v1">
+        <div class="variant-head">
+          <h2>01. Floating product bar</h2>
+          <p>Похоже на текущий сайт, но чище: шапка легче, разделы сразу под ней как продуктовые карточки.</p>
+        </div>
+        <div class="screen">
+          <div class="topbar">
+            <div class="brand"><span class="brand-mark">&lt;/&gt;</span>RixHub</div>
+            <nav class="nav"><a class="active">Home</a><a>Тир-лист ИИ</a><a>Промпты</a><a>Гайды</a><a>Сервисы</a><a>Бесплатное</a><a>О нас</a></nav>
+            <div class="lang"><span>RU</span><span>EN</span></div>
+          </div>
+          <h3 class="hub-title">Разделы хаба</h3>
+          <p class="hub-note">AI-сервис для полного обучения вайбкодингу и выхода на первые деньги с билдинга.</p>
+          <div class="grid">
+            <article class="card big"><div class="badge">🏆</div><h3>Тир-лист ИИ</h3><p>Сравни модели, IDE и агентов.</p><span class="cta">Перейти -></span></article>
+            <article class="card big"><div class="badge">⌁</div><h3>Промпты</h3><p>Готовые запросы под код, UI и автоматизацию.</p><span class="cta">Перейти -></span></article>
+            <article class="card small"><div class="badge">01</div><h3>Гайды</h3><p>Путь от идеи до MVP.</p><span class="cta">Перейти -></span></article>
+            <article class="card small"><div class="badge">API</div><h3>Сервисы</h3><p>Инструменты и API.</p><span class="cta">Перейти -></span></article>
+            <article class="card small"><div class="badge">0₽</div><h3>Бесплатное</h3><p>Киты, курсы, шаблоны.</p><span class="cta">Перейти -></span></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="variant v2">
+        <div class="variant-head">
+          <h2>02. Sidebar hub</h2>
+          <p>Меню слева как в настоящем продукте. Хорошо, если RixHub должен ощущаться не лендингом, а платформой.</p>
+        </div>
+        <div class="screen">
+          <aside class="side">
+            <div class="brand"><span class="brand-mark">RH</span>RixHub</div>
+            <nav class="side-nav"><a class="active">Главная</a><a>Тир-лист ИИ</a><a>Промпты</a><a>Гайды</a><a>Сервисы</a><a>Бесплатное</a><a>О нас</a></nav>
+            <p class="side-foot">AI-сервис для обучения вайбкодингу и первых денег с билдинга.</p>
+          </aside>
+          <section>
+            <h3 class="hub-title">Что нужно сегодня?</h3>
+            <p class="hub-note">Выбирай раздел под задачу: сравнить ИИ, взять промпт, пройти маршрут или найти сервис.</p>
+            <div class="grid">
+              <article class="card big"><div class="badge">#1</div><h3>Тир-лист ИИ</h3><p>Лучшие инструменты по задачам.</p><span class="cta">Сравнить -></span></article>
+              <article class="card big"><div class="badge">PR</div><h3>Промпты</h3><p>Команды для быстрого билдинга.</p><span class="cta">Открыть -></span></article>
+              <article class="card small"><div class="badge">GD</div><h3>Гайды</h3><p>Учиться по шагам.</p><span class="cta">Учиться -></span></article>
+              <article class="card small"><div class="badge">SV</div><h3>Сервисы</h3><p>Каталог инструментов.</p><span class="cta">Найти -></span></article>
+              <article class="card small"><div class="badge">0₽</div><h3>Бесплатное</h3><p>Ресурсы для старта.</p><span class="cta">Забрать -></span></article>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="variant v3">
+        <div class="variant-head">
+          <h2>03. Command hub</h2>
+          <p>Шапка как командная строка: сразу ясно, что сайт помогает искать и запускать действия.</p>
+        </div>
+        <div class="screen">
+          <div class="topbar">
+            <div class="commandbar">
+              <div class="brand"><span class="brand-mark">⌘</span>RixHub</div>
+              <div class="search">Найти промпт, сервис, гайд или AI-инструмент...</div>
+              <div class="lang"><span>RU</span><span>EN</span></div>
+            </div>
+          </div>
+          <h3 class="hub-title">Быстрые действия</h3>
+          <div class="grid">
+            <div class="command-row"><div class="badge">01</div><div><strong>Открыть тир-лист ИИ</strong><p>Сравнить модели и агентов перед проектом.</p></div><span class="cta">Run -></span></div>
+            <div class="command-row"><div class="badge">02</div><div><strong>Найти промпт</strong><p>Взять готовый запрос под задачу.</p></div><span class="cta">Open -></span></div>
+            <div class="command-row"><div class="badge">03</div><div><strong>Пройти гайд</strong><p>Маршрут от идеи до MVP.</p></div><span class="cta">Start -></span></div>
+            <div class="command-row"><div class="badge">04</div><div><strong>Подобрать сервис</strong><p>AI API, no-code, базы и хостинг.</p></div><span class="cta">Find -></span></div>
+            <div class="command-row"><div class="badge">05</div><div><strong>Забрать бесплатное</strong><p>Курсы, шаблоны, ассеты.</p></div><span class="cta">Get -></span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="variant v4">
+        <div class="variant-head">
+          <h2>04. Center tabs</h2>
+          <p>Аккуратная шапка с центральными табами. Хорошо, если хочется оставить верхнее меню, но сделать его легче.</p>
+        </div>
+        <div class="screen">
+          <div class="topbar">
+            <div class="brand"><span class="brand-mark">RX</span>RixHub</div>
+            <nav class="nav"><a class="active">Home</a><a>Тир-лист</a><a>Промпты</a><a>Гайды</a><a>Сервисы</a><a>Free</a></nav>
+            <div class="lang"><span>RU</span><span>EN</span></div>
+          </div>
+          <h3 class="hub-title">Выбери ресурс</h3>
+          <p class="hub-note">Один экран для выбора: рейтинг ИИ, промпты, обучение, сервисы или бесплатные материалы.</p>
+          <div class="grid">
+            <article class="card"><div class="badge">🏅</div><h3>Тир-лист ИИ</h3><p>Что выбрать под задачу.</p><span class="cta">Перейти -></span></article>
+            <article class="card"><div class="badge">/</div><h3>Промпты</h3><p>Готовые запросы.</p><span class="cta">Перейти -></span></article>
+            <article class="card"><div class="badge">→</div><h3>Гайды</h3><p>Маршруты обучения.</p><span class="cta">Перейти -></span></article>
+            <article class="card"><div class="badge">API</div><h3>Сервисы</h3><p>Каталог инструментов.</p><span class="cta">Перейти -></span></article>
+            <article class="card"><div class="badge">0₽</div><h3>Бесплатное</h3><p>Стартовые ресурсы.</p><span class="cta">Перейти -></span></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="variant v5">
+        <div class="variant-head">
+          <h2>05. Split navigation</h2>
+          <p>Слева бренд и основной хаб, справа компактная вертикальная навигация по разделам.</p>
+        </div>
+        <div class="screen">
+          <section class="left-panel">
+            <div class="topbar"><div class="brand"><span class="brand-mark">&lt;/&gt;</span>RixHub</div><div class="lang"><span>RU</span><span>EN</span></div></div>
+            <h3 class="hub-title">AI-хаб для билдинга</h3>
+            <p class="hub-note">Для тех, кто учится вайбкодить, быстро выбирает инструменты и собирает первые проекты.</p>
+            <div class="grid">
+              <article class="card big"><div class="badge">#1</div><h3>Тир-лист ИИ</h3><p>Сравнение инструментов.</p><span class="cta">Перейти -></span></article>
+              <article class="card big"><div class="badge">PR</div><h3>Промпты</h3><p>Запросы для билдинга.</p><span class="cta">Перейти -></span></article>
+            </div>
+          </section>
+          <aside class="right-panel">
+            <article class="card"><h3>Гайды</h3><p>Маршруты обучения.</p></article>
+            <article class="card"><h3>Сервисы</h3><p>Инструменты и API.</p></article>
+            <article class="card"><h3>Бесплатное</h3><p>Киты, курсы, шаблоны.</p></article>
+            <article class="card"><h3>О нас</h3><p>Соцсети и комьюнити.</p></article>
+          </aside>
+        </div>
+      </section>
+
+      <section class="variant v6">
+        <div class="variant-head">
+          <h2>06. Top dock</h2>
+          <p>Верхняя шапка становится очень простой, а разделы навигации уходят в “док” под пояснением.</p>
+        </div>
+        <div class="screen">
+          <div class="topbar"><div class="brand"><span class="brand-mark">RH</span>RixHub</div><div class="lang"><span>RU</span><span>EN</span></div></div>
+          <h3 class="hub-title">Разделы хаба</h3>
+          <p class="hub-note">AI-сервис для полного обучения вайбкодингу и выхода на первые деньги с билдинга.</p>
+          <div class="dock"><span>Тир-лист ИИ</span><span>Промпты</span><span>Гайды</span><span>Сервисы</span><span>Бесплатное</span></div>
+          <div class="grid">
+            <article class="card big"><div class="badge">1</div><h3>Тир-лист ИИ</h3><p>Сравнить лучшее.</p><span class="cta">Перейти -></span></article>
+            <article class="card big"><div class="badge">/</div><h3>Промпты</h3><p>Взять готовое.</p><span class="cta">Перейти -></span></article>
+            <article class="card small"><div class="badge">G</div><h3>Гайды</h3><p>Учиться.</p><span class="cta">Перейти -></span></article>
+            <article class="card small"><div class="badge">S</div><h3>Сервисы</h3><p>Найти.</p><span class="cta">Перейти -></span></article>
+            <article class="card small"><div class="badge">0</div><h3>Бесплатное</h3><p>Забрать.</p><span class="cta">Перейти -></span></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="variant v7-full">
+        <div class="variant-head">
+          <h2>07. Full page clean</h2>
+          <p>Без рамки вокруг макета: шапка и разделы лежат прямо на фоне сайта, как полноценный первый экран.</p>
+        </div>
+        <div class="fullbleed">
+          <div class="topbar">
+            <div class="brand"><span class="brand-mark">RH</span>RixHub</div>
+            <nav class="nav"><a class="active">Home</a><a>Тир-лист</a><a>Промпты</a><a>Гайды</a><a>Сервисы</a><a>Бесплатное</a></nav>
+            <div class="lang"><span>RU</span><span>EN</span></div>
+          </div>
+          <div class="full-inner">
+            <span class="full-kicker">AI-сервис для вайбкодинга</span>
+            <h3 class="full-title">Выбирай раздел и сразу двигай проект</h3>
+            <p class="full-note">Без лишней главной страницы: инструменты, промпты, гайды, сервисы и бесплатные ресурсы видны сразу.</p>
+            <div class="full-grid">
+              <article class="card"><div class="badge">🏆</div><h3>Тир-лист ИИ</h3><p>Сравни модели, IDE и агентов.</p><span class="cta">Перейти -></span></article>
+              <article class="card"><div class="badge">/</div><h3>Промпты</h3><p>Готовые запросы для билдинга.</p><span class="cta">Перейти -></span></article>
+              <article class="card"><div class="badge">01</div><h3>Гайды</h3><p>Маршруты обучения.</p><span class="cta">Перейти -></span></article>
+              <article class="card"><div class="badge">API</div><h3>Сервисы</h3><p>Каталог инструментов.</p><span class="cta">Перейти -></span></article>
+              <article class="card"><div class="badge">0₽</div><h3>Бесплатное</h3><p>Курсы, шаблоны, ассеты.</p><span class="cta">Перейти -></span></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="variant v8-full">
+        <div class="variant-head">
+          <h2>08. Full page sidebar</h2>
+          <p>Меню слева на всю высоту экрана, а справа полноценная рабочая поверхность хаба.</p>
+        </div>
+        <div class="fullbleed">
+          <div class="topbar">
+            <div class="brand"><span class="brand-mark">RX</span>RixHub</div>
+            <nav class="nav"><a class="active">Главная</a><a>Тир-лист ИИ</a><a>Промпты</a><a>Гайды</a><a>Сервисы</a><a>Бесплатное</a><a>О нас</a></nav>
+            <div class="lang"><span>RU</span><span>EN</span></div>
+          </div>
+          <div class="full-inner">
+            <span class="full-kicker">Панель билдеров</span>
+            <h3 class="full-title">RixHub как рабочий стол для AI-проектов</h3>
+            <p class="full-note">Такой вариант меньше похож на лендинг и больше на продукт, куда пользователь возвращается каждый день.</p>
+            <div class="full-grid">
+              <article class="card"><div class="badge">#1</div><h3>Тир-лист ИИ</h3><p>Выбор моделей и агентов.</p><span class="cta">Сравнить -></span></article>
+              <article class="card"><div class="badge">PR</div><h3>Промпты</h3><p>Запросы для проектов.</p><span class="cta">Открыть -></span></article>
+              <article class="card"><div class="badge">GD</div><h3>Гайды</h3><p>Путь к MVP.</p><span class="cta">Учиться -></span></article>
+              <article class="card"><div class="badge">SV</div><h3>Сервисы</h3><p>Инструменты и API.</p><span class="cta">Найти -></span></article>
+              <article class="card"><div class="badge">0₽</div><h3>Бесплатное</h3><p>Ресурсы без бюджета.</p><span class="cta">Забрать -></span></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="variant v9-full">
+        <div class="variant-head">
+          <h2>09. Full page dock</h2>
+          <p>Очень чисто: верхняя шапка минимальная, а навигация по разделам вынесена в центральный док.</p>
+        </div>
+        <div class="fullbleed">
+          <div class="topbar">
+            <div class="brand"><span class="brand-mark">&lt;/&gt;</span>RixHub</div>
+            <div class="lang"><span>RU</span><span>EN</span></div>
+          </div>
+          <div class="full-inner">
+            <span class="full-kicker">Учись. Собирай. Запускай.</span>
+            <h3 class="full-title">Весь AI-билдинг разбит на понятные входы</h3>
+            <p class="full-note">Док помогает быстро понять структуру сайта без перегруженной верхней навигации.</p>
+            <div class="dock"><span>Тир-лист ИИ</span><span>Промпты</span><span>Гайды</span><span>Сервисы</span><span>Бесплатное</span></div>
+            <div class="full-grid">
+              <article class="card"><div class="badge">🏅</div><h3>Тир-лист ИИ</h3><p>Сравнение инструментов.</p><span class="cta">Перейти -></span></article>
+              <article class="card"><div class="badge">/</div><h3>Промпты</h3><p>Готовые запросы.</p><span class="cta">Перейти -></span></article>
+              <article class="card"><div class="badge">→</div><h3>Гайды</h3><p>Маршруты обучения.</p><span class="cta">Перейти -></span></article>
+              <article class="card"><div class="badge">API</div><h3>Сервисы</h3><p>Каталог сервисов.</p><span class="cta">Перейти -></span></article>
+              <article class="card"><div class="badge">0₽</div><h3>Бесплатное</h3><p>Стартовые киты.</p><span class="cta">Перейти -></span></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="variant v10-full">
+        <div class="variant-head">
+          <h2>10. Full page split</h2>
+          <p>Слева сильная навигационная идея, справа карточки. Выглядит как полноценный продуктовый экран.</p>
+        </div>
+        <div class="fullbleed">
+          <div class="topbar">
+            <div class="brand"><span class="brand-mark">RH</span>RixHub</div>
+            <nav class="nav"><a class="active">Home</a><a>Разделы</a><a>О нас</a></nav>
+            <div class="lang"><span>RU</span><span>EN</span></div>
+          </div>
+          <div class="full-inner">
+            <section>
+              <span class="full-kicker">AI-хаб нового поколения</span>
+              <h3 class="full-title">Сначала выбери задачу, потом ресурс</h3>
+              <p class="full-note">Этот вариант делает разделы хаба не просто списком ссылок, а главным способом пользоваться сайтом.</p>
+            </section>
+            <div class="full-grid">
+              <article class="card"><div class="badge">1</div><h3>Тир-лист ИИ</h3><p>Что выбрать под задачу.</p><span class="cta">Сравнить -></span></article>
+              <article class="card"><div class="badge">PR</div><h3>Промпты</h3><p>Что сказать AI.</p><span class="cta">Открыть -></span></article>
+              <article class="card"><div class="badge">GD</div><h3>Гайды</h3><p>Как пройти путь.</p><span class="cta">Учиться -></span></article>
+              <article class="card"><div class="badge">SV</div><h3>Сервисы</h3><p>Чем собрать проект.</p><span class="cta">Найти -></span></article>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
