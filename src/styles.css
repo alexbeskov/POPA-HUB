@@ -692,10 +692,11 @@ kbd {
 
 .metric strong {
   display: block;
-  color: #f1feff;
+  color: #ffffff;
   font-size: 42px;
   font-variant-numeric: tabular-nums;
   line-height: 1;
+  text-shadow: 0 0 18px rgba(255, 255, 255, 0.12);
 }
 
 .metric span {
@@ -706,8 +707,12 @@ kbd {
 .count-up-text {
   display: inline-block;
   min-width: 1ch;
-  color: inherit;
+  color: #ffffff;
   font-variant-numeric: tabular-nums;
+}
+
+.metric strong .count-up-text {
+  color: #ffffff;
 }
 
 .sections {
