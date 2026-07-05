@@ -778,6 +778,19 @@ kbd {
   border-radius: 20px;
 }
 
+.home-hub .section-card-number {
+  position: relative;
+  z-index: 1;
+  color: rgba(255, 255, 255, 0.07);
+  font-size: clamp(54px, 5.2vw, 86px);
+  font-weight: 950;
+  line-height: 0.78;
+  letter-spacing: 0;
+  transition:
+    color 220ms ease,
+    transform 220ms ease;
+}
+
 .home-hub .section-card-body {
   display: flex;
   flex: 1;
@@ -810,9 +823,9 @@ kbd {
   color: rgba(190, 210, 220, 0.88);
   font-size: 16px;
   line-height: 1.48;
-  opacity: 0;
-  transform: translate3d(0, 16px, 0);
-  filter: blur(7px);
+  opacity: 0.84;
+  transform: translate3d(0, 0, 0);
+  filter: blur(0);
   transition:
     opacity 320ms ease,
     transform 320ms ease,
@@ -831,9 +844,15 @@ kbd {
 
 .home-hub .section-card:hover p,
 .home-hub .section-card:focus-visible p {
-  opacity: 1;
+  opacity: 0.98;
   transform: translate3d(0, 0, 0);
   filter: blur(0);
+}
+
+.home-hub .section-card:hover .section-card-number,
+.home-hub .section-card:focus-visible .section-card-number {
+  color: rgba(255, 255, 255, 0.105);
+  transform: translate3d(0, -3px, 0);
 }
 
 .home-hub .section-card:hover .section-card-action,
@@ -1866,6 +1885,10 @@ kbd {
     max-width: 14ch;
     font-size: 31px;
     line-height: 1;
+  }
+
+  .home-hub .section-card-number {
+    font-size: 56px;
   }
 
   .home-hub .section-card p {

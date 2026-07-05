@@ -468,6 +468,9 @@ function App() {
                   <span className="section-icon">
                     <Icon size={24} />
                   </span>
+                  <span className="section-card-number" aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
                 </div>
                 <div className="section-card-body">
                   <h3>{title}</h3>
