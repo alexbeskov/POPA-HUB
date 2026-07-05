@@ -791,12 +791,37 @@ kbd {
   margin-top: 14px;
   font-size: 15px;
   line-height: 1.48;
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+  filter: blur(7px);
+  transition:
+    opacity 260ms ease,
+    transform 260ms ease,
+    filter 260ms ease;
 }
 
 .home-hub .section-card-action {
-  min-height: 44px;
-  padding: 0 17px;
-  font-size: 14px;
+  min-height: 34px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: rgba(174, 255, 255, 0.64);
+  font-size: 13px;
+  box-shadow: none;
+}
+
+.home-hub .section-card:hover p,
+.home-hub .section-card:focus-visible p {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  filter: blur(0);
+}
+
+.home-hub .section-card:hover .section-card-action,
+.home-hub .section-card:focus-visible .section-card-action {
+  color: #aeffff;
+  background: transparent;
+  transform: translateX(2px);
 }
 
 .section-heading {
@@ -969,6 +994,14 @@ kbd {
   border-color: rgba(117, 255, 103, 0.32);
   background: rgba(117, 255, 103, 0.13);
   color: #ffffff;
+}
+
+.home-hub .section-card:hover .section-card-action,
+.home-hub .section-card:focus-visible .section-card-action {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  color: #aeffff;
 }
 
 .about {
