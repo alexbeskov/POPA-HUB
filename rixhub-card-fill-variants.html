@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RixHub card fill variants</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #03070b;
+        color: #f2ffff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at 10% 5%, rgba(117, 255, 103, 0.32), transparent 28%),
+          radial-gradient(circle at 88% 12%, rgba(18, 107, 255, 0.34), transparent 31%),
+          linear-gradient(180deg, #06120f 0%, #07131a 42%, #03070b 100%);
+      }
+
+      main {
+        width: min(100% - 56px, 1280px);
+        margin: 0 auto;
+        padding: 42px 0 80px;
+      }
+
+      .intro {
+        margin-bottom: 28px;
+      }
+
+      .intro h1 {
+        margin: 0;
+        font-size: clamp(42px, 6vw, 82px);
+        line-height: 0.94;
+        letter-spacing: 0;
+      }
+
+      .intro p {
+        max-width: 720px;
+        margin: 16px 0 0;
+        color: rgba(190, 210, 220, 0.78);
+        font-size: 18px;
+        line-height: 1.55;
+      }
+
+      .variant {
+        margin-top: 34px;
+        padding: 28px;
+        border: 1px solid rgba(174, 239, 255, 0.11);
+        border-radius: 30px;
+        background: rgba(4, 10, 16, 0.45);
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
+      }
+
+      .variant-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 20px;
+      }
+
+      .variant-head h2 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .variant-head p {
+        max-width: 560px;
+        margin: 0;
+        color: rgba(176, 196, 208, 0.72);
+        line-height: 1.5;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .card {
+        position: relative;
+        display: flex;
+        min-height: 260px;
+        padding: 28px;
+        overflow: hidden;
+        border: 1px solid rgba(174, 239, 255, 0.12);
+        border-radius: 28px;
+        background:
+          radial-gradient(circle at 42% -8%, rgba(117, 255, 103, 0.1), transparent 58%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.014));
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.18);
+      }
+
+      .card.big {
+        grid-column: span 3;
+        min-height: 292px;
+      }
+
+      .card.small {
+        grid-column: span 2;
+      }
+
+      .icon {
+        display: grid;
+        place-items: center;
+        width: 62px;
+        height: 62px;
+        flex: 0 0 auto;
+        border: 1px solid rgba(46, 235, 223, 0.22);
+        border-radius: 20px;
+        color: #37f5e5;
+        background: rgba(4, 14, 20, 0.25);
+        box-shadow: 0 16px 34px rgba(0, 0, 0, 0.16);
+      }
+
+      .icon svg {
+        width: 28px;
+        height: 28px;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        fill: none;
+      }
+
+      h3,
+      p {
+        margin: 0;
+      }
+
+      .title {
+        color: #f3ffff;
+        font-size: 38px;
+        line-height: 0.98;
+        letter-spacing: 0;
+      }
+
+      .big .title {
+        font-size: 46px;
+      }
+
+      .desc {
+        color: rgba(190, 210, 220, 0.78);
+        font-size: 16px;
+        line-height: 1.5;
+      }
+
+      .link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+        color: rgba(174, 255, 255, 0.65);
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .v1 .card {
+        flex-direction: column;
+      }
+
+      .v1 .content {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: flex-end;
+        margin-top: 34px;
+      }
+
+      .v1 .desc {
+        margin-top: 16px;
+        opacity: 0.68;
+      }
+
+      .v1 .link {
+        margin-top: 24px;
+      }
+
+      .v2 .card {
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .v2 .topline {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .v2 .ghost-number {
+        color: rgba(255, 255, 255, 0.055);
+        font-size: 84px;
+        font-weight: 950;
+        line-height: 0.78;
+      }
+
+      .v2 .content {
+        margin-top: 32px;
+      }
+
+      .v2 .desc {
+        max-width: 440px;
+        margin-top: 14px;
+      }
+
+      .v3 .card {
+        flex-direction: column;
+      }
+
+      .v3 .content {
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+        flex: 1;
+        margin-top: 26px;
+      }
+
+      .v3 .title {
+        max-width: 10ch;
+        font-size: 44px;
+      }
+
+      .v3 .preview {
+        display: grid;
+        gap: 9px;
+        margin-top: 22px;
+      }
+
+      .v3 .preview span {
+        height: 8px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(55, 245, 229, 0.54), rgba(117, 255, 103, 0.12));
+      }
+
+      .v3 .preview span:nth-child(2) {
+        width: 72%;
+      }
+
+      .v3 .preview span:nth-child(3) {
+        width: 54%;
+      }
+
+      .v3 .link {
+        margin-top: 24px;
+      }
+
+      .v4 .card {
+        align-items: stretch;
+        gap: 24px;
+      }
+
+      .v4 .content {
+        display: flex;
+        min-width: 0;
+        flex: 1;
+        flex-direction: column;
+        justify-content: flex-end;
+      }
+
+      .v4 .title {
+        font-size: 40px;
+      }
+
+      .v4 .desc {
+        margin-top: 14px;
+      }
+
+      .v4 .link {
+        margin-top: 22px;
+      }
+
+      .v5 .card {
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .v5 .title {
+        max-width: 9ch;
+        font-size: 48px;
+      }
+
+      .v5 .bottom {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 18px;
+        margin-top: 24px;
+      }
+
+      .v5 .desc {
+        max-width: 320px;
+        font-size: 15px;
+      }
+
+      .v6 .card {
+        flex-direction: column;
+        min-height: 288px;
+      }
+
+      .v6 .content {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .v6 .icon {
+        margin: 0 auto;
+      }
+
+      .v6 .title {
+        margin-top: 26px;
+        font-size: 42px;
+      }
+
+      .v6 .desc {
+        max-width: 360px;
+        margin: 16px auto 0;
+      }
+
+      .v6 .link {
+        margin: 24px auto 0;
+      }
+
+      @media (max-width: 900px) {
+        main {
+          width: min(100% - 28px, 1280px);
+        }
+
+        .variant {
+          padding: 18px;
+        }
+
+        .variant-head {
+          display: block;
+        }
+
+        .variant-head p {
+          margin-top: 8px;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .card,
+        .card.big,
+        .card.small {
+          grid-column: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="intro">
+        <h1>Варианты заполнения карточек хаба</h1>
+        <p>
+          Без маленьких меток сверху. Здесь только идеи композиции: как сделать карточки плотнее,
+          понятнее и не пустыми, не добавляя лишнего шума.
+        </p>
+      </section>
+
+      <section class="variant v1">
+        <div class="variant-head">
+          <h2>01. Большой заголовок + видимое описание</h2>
+          <p>Самый прямой вариант: описание видно всегда, но оно спокойное и не спорит с заголовком.</p>
+        </div>
+        <div class="grid">
+          <article class="card big">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M5 6H3v2a4 4 0 0 0 4 4M19 6h2v2a4 4 0 0 1-4 4"/></svg></div>
+            <div class="content"><h3 class="title">Тир-лист ИИ</h3><p class="desc">Сравни модели, IDE и ИИ-агентов под код, дизайн, ресёрч и быстрый запуск.</p><span class="link">Перейти →</span></div>
+          </article>
+          <article class="card big">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="m4 20 4-1 10-10-3-3L5 16l-1 4Z"/><path d="m14 6 3 3M19 4l1-2M20 9h2M6 5 5 3"/></svg></div>
+            <div class="content"><h3 class="title">Промпты</h3><p class="desc">Готовые запросы для UI, архитектуры, контента, тестов и автоматизаций.</p><span class="link">Перейти →</span></div>
+          </article>
+          <article class="card small"><div class="icon"><svg viewBox="0 0 24 24"><path d="M4 5a3 3 0 0 1 3-3h13v17H7a3 3 0 0 0-3 3V5Z"/><path d="M7 2v17"/></svg></div><div class="content"><h3 class="title">Гайды</h3><p class="desc">Пошаговые маршруты от идеи до MVP.</p><span class="link">Перейти →</span></div></article>
+          <article class="card small"><div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v10l8 4 8-4V7l-8-4Z"/><path d="m4 7 8 4 8-4M12 11v10"/></svg></div><div class="content"><h3 class="title">Сервисы</h3><p class="desc">Каталог AI-сервисов, API и no-code.</p><span class="link">Перейти →</span></div></article>
+          <article class="card small"><div class="icon"><svg viewBox="0 0 24 24"><path d="M20 12v8H4v-8M22 7H2v5h20V7ZM12 22V7M12 7H7.5a2.5 2.5 0 1 1 2.2-3.7L12 7ZM12 7h4.5a2.5 2.5 0 1 0-2.2-3.7L12 7Z"/></svg></div><div class="content"><h3 class="title">Бесплатные ресурсы</h3><p class="desc">Курсы, шаблоны, ассеты и чеклисты.</p><span class="link">Перейти →</span></div></article>
+        </div>
+      </section>
+
+      <section class="variant v2">
+        <div class="variant-head">
+          <h2>02. Большие фоновые номера</h2>
+          <p>Карточки становятся заполненнее за счёт огромной полупрозрачной цифры, без лишнего текста.</p>
+        </div>
+        <div class="grid">
+          <article class="card big"><div class="topline"><div class="icon"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M5 6H3v2a4 4 0 0 0 4 4M19 6h2v2a4 4 0 0 1-4 4"/></svg></div><span class="ghost-number">01</span></div><div class="content"><h3 class="title">Тир-лист ИИ</h3><p class="desc">Лучшие модели и агенты под задачу.</p></div><span class="link">Перейти →</span></article>
+          <article class="card big"><div class="topline"><div class="icon"><svg viewBox="0 0 24 24"><path d="m4 20 4-1 10-10-3-3L5 16l-1 4Z"/><path d="m14 6 3 3M19 4l1-2M20 9h2M6 5 5 3"/></svg></div><span class="ghost-number">02</span></div><div class="content"><h3 class="title">Промпты</h3><p class="desc">Готовые запросы для билдинга.</p></div><span class="link">Перейти →</span></article>
+          <article class="card small"><div class="topline"><div class="icon"><svg viewBox="0 0 24 24"><path d="M4 5a3 3 0 0 1 3-3h13v17H7a3 3 0 0 0-3 3V5Z"/><path d="M7 2v17"/></svg></div><span class="ghost-number">03</span></div><div class="content"><h3 class="title">Гайды</h3><p class="desc">Маршруты обучения.</p></div><span class="link">Перейти →</span></article>
+          <article class="card small"><div class="topline"><div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v10l8 4 8-4V7l-8-4Z"/><path d="m4 7 8 4 8-4M12 11v10"/></svg></div><span class="ghost-number">04</span></div><div class="content"><h3 class="title">Сервисы</h3><p class="desc">AI API и инструменты.</p></div><span class="link">Перейти →</span></article>
+          <article class="card small"><div class="topline"><div class="icon"><svg viewBox="0 0 24 24"><path d="M20 12v8H4v-8M22 7H2v5h20V7ZM12 22V7M12 7H7.5a2.5 2.5 0 1 1 2.2-3.7L12 7ZM12 7h4.5a2.5 2.5 0 1 0-2.2-3.7L12 7Z"/></svg></div><span class="ghost-number">05</span></div><div class="content"><h3 class="title">Бесплатные ресурсы</h3><p class="desc">Старт без бюджета.</p></div><span class="link">Перейти →</span></article>
+        </div>
+      </section>
+
+      <section class="variant v3">
+        <div class="variant-head">
+          <h2>03. Preview-линии вместо описания</h2>
+          <p>Карточка заполнена визуальным намёком на содержимое, а описание можно оставить на hover.</p>
+        </div>
+        <div class="grid">
+          <article class="card big"><div class="icon"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M5 6H3v2a4 4 0 0 0 4 4M19 6h2v2a4 4 0 0 1-4 4"/></svg></div><div class="content"><h3 class="title">Тир-лист ИИ</h3><div class="preview"><span></span><span></span><span></span></div><span class="link">Перейти →</span></div></article>
+          <article class="card big"><div class="icon"><svg viewBox="0 0 24 24"><path d="m4 20 4-1 10-10-3-3L5 16l-1 4Z"/><path d="m14 6 3 3M19 4l1-2M20 9h2M6 5 5 3"/></svg></div><div class="content"><h3 class="title">Промпты</h3><div class="preview"><span></span><span></span><span></span></div><span class="link">Перейти →</span></div></article>
+          <article class="card small"><div class="icon"><svg viewBox="0 0 24 24"><path d="M4 5a3 3 0 0 1 3-3h13v17H7a3 3 0 0 0-3 3V5Z"/><path d="M7 2v17"/></svg></div><div class="content"><h3 class="title">Гайды</h3><div class="preview"><span></span><span></span></div><span class="link">Перейти →</span></div></article>
+          <article class="card small"><div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v10l8 4 8-4V7l-8-4Z"/><path d="m4 7 8 4 8-4M12 11v10"/></svg></div><div class="content"><h3 class="title">Сервисы</h3><div class="preview"><span></span><span></span></div><span class="link">Перейти →</span></div></article>
+          <article class="card small"><div class="icon"><svg viewBox="0 0 24 24"><path d="M20 12v8H4v-8M22 7H2v5h20V7ZM12 22V7M12 7H7.5a2.5 2.5 0 1 1 2.2-3.7L12 7ZM12 7h4.5a2.5 2.5 0 1 0-2.2-3.7L12 7Z"/></svg></div><div class="content"><h3 class="title">Бесплатные ресурсы</h3><div class="preview"><span></span><span></span></div><span class="link">Перейти →</span></div></article>
+        </div>
+      </section>
+
+      <section class="variant v4">
+        <div class="variant-head">
+          <h2>04. Иконка слева, текст справа</h2>
+          <p>Более продуктовый вид: меньше воздуха сверху, больше полезной информации в центре карточки.</p>
+        </div>
+        <div class="grid">
+          <article class="card big"><div class="icon"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M5 6H3v2a4 4 0 0 0 4 4M19 6h2v2a4 4 0 0 1-4 4"/></svg></div><div class="content"><h3 class="title">Тир-лист ИИ</h3><p class="desc">Сравни модели, IDE и ИИ-агентов под код, дизайн, ресёрч и быстрый запуск.</p><span class="link">Перейти →</span></div></article>
+          <article class="card big"><div class="icon"><svg viewBox="0 0 24 24"><path d="m4 20 4-1 10-10-3-3L5 16l-1 4Z"/><path d="m14 6 3 3M19 4l1-2M20 9h2M6 5 5 3"/></svg></div><div class="content"><h3 class="title">Промпты</h3><p class="desc">Готовые запросы для UI, архитектуры, контента, тестов и автоматизаций.</p><span class="link">Перейти →</span></div></article>
+          <article class="card small"><div class="icon"><svg viewBox="0 0 24 24"><path d="M4 5a3 3 0 0 1 3-3h13v17H7a3 3 0 0 0-3 3V5Z"/><path d="M7 2v17"/></svg></div><div class="content"><h3 class="title">Гайды</h3><p class="desc">От идеи до MVP.</p><span class="link">Перейти →</span></div></article>
+          <article class="card small"><div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v10l8 4 8-4V7l-8-4Z"/><path d="m4 7 8 4 8-4M12 11v10"/></svg></div><div class="content"><h3 class="title">Сервисы</h3><p class="desc">API, no-code, boilerplate.</p><span class="link">Перейти →</span></div></article>
+          <article class="card small"><div class="icon"><svg viewBox="0 0 24 24"><path d="M20 12v8H4v-8M22 7H2v5h20V7ZM12 22V7M12 7H7.5a2.5 2.5 0 1 1 2.2-3.7L12 7ZM12 7h4.5a2.5 2.5 0 1 0-2.2-3.7L12 7Z"/></svg></div><div class="content"><h3 class="title">Бесплатные ресурсы</h3><p class="desc">Шаблоны и курсы.</p><span class="link">Перейти →</span></div></article>
+        </div>
+      </section>
+
+      <section class="variant v5">
+        <div class="variant-head">
+          <h2>05. Суперкрупный текст</h2>
+          <p>Карточки почти типографические: крупный текст сам заполняет площадь, описание уходит вниз.</p>
+        </div>
+        <div class="grid">
+          <article class="card big"><div class="icon"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M5 6H3v2a4 4 0 0 0 4 4M19 6h2v2a4 4 0 0 1-4 4"/></svg></div><h3 class="title">Тир-лист ИИ</h3><div class="bottom"><p class="desc">Сравнение моделей и агентов.</p><span class="link">→</span></div></article>
+          <article class="card big"><div class="icon"><svg viewBox="0 0 24 24"><path d="m4 20 4-1 10-10-3-3L5 16l-1 4Z"/><path d="m14 6 3 3M19 4l1-2M20 9h2M6 5 5 3"/></svg></div><h3 class="title">Промпты</h3><div class="bottom"><p class="desc">Готовые запросы под задачи.</p><span class="link">→</span></div></article>
+          <article class="card small"><div class="icon"><svg viewBox="0 0 24 24"><path d="M4 5a3 3 0 0 1 3-3h13v17H7a3 3 0 0 0-3 3V5Z"/><path d="M7 2v17"/></svg></div><h3 class="title">Гайды</h3><div class="bottom"><p class="desc">Путь от идеи до запуска.</p><span class="link">→</span></div></article>
+          <article class="card small"><div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v10l8 4 8-4V7l-8-4Z"/><path d="m4 7 8 4 8-4M12 11v10"/></svg></div><h3 class="title">Сервисы</h3><div class="bottom"><p class="desc">Инструменты и API.</p><span class="link">→</span></div></article>
+          <article class="card small"><div class="icon"><svg viewBox="0 0 24 24"><path d="M20 12v8H4v-8M22 7H2v5h20V7ZM12 22V7M12 7H7.5a2.5 2.5 0 1 1 2.2-3.7L12 7ZM12 7h4.5a2.5 2.5 0 1 0-2.2-3.7L12 7Z"/></svg></div><h3 class="title">Бесплатные ресурсы</h3><div class="bottom"><p class="desc">Стартовые наборы.</p><span class="link">→</span></div></article>
+        </div>
+      </section>
+
+      <section class="variant v6">
+        <div class="variant-head">
+          <h2>06. Центрированный вариант</h2>
+          <p>Более спокойный и премиальный вариант: иконка, крупное название, описание по центру.</p>
+        </div>
+        <div class="grid">
+          <article class="card big"><div class="content"><div class="icon"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M5 6H3v2a4 4 0 0 0 4 4M19 6h2v2a4 4 0 0 1-4 4"/></svg></div><h3 class="title">Тир-лист ИИ</h3><p class="desc">Сравни инструменты перед стартом проекта.</p><span class="link">Перейти →</span></div></article>
+          <article class="card big"><div class="content"><div class="icon"><svg viewBox="0 0 24 24"><path d="m4 20 4-1 10-10-3-3L5 16l-1 4Z"/><path d="m14 6 3 3M19 4l1-2M20 9h2M6 5 5 3"/></svg></div><h3 class="title">Промпты</h3><p class="desc">Бери готовые запросы и ускоряй работу.</p><span class="link">Перейти →</span></div></article>
+          <article class="card small"><div class="content"><div class="icon"><svg viewBox="0 0 24 24"><path d="M4 5a3 3 0 0 1 3-3h13v17H7a3 3 0 0 0-3 3V5Z"/><path d="M7 2v17"/></svg></div><h3 class="title">Гайды</h3><p class="desc">Пошаговые маршруты.</p><span class="link">Перейти →</span></div></article>
+          <article class="card small"><div class="content"><div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v10l8 4 8-4V7l-8-4Z"/><path d="m4 7 8 4 8-4M12 11v10"/></svg></div><h3 class="title">Сервисы</h3><p class="desc">Каталог инструментов.</p><span class="link">Перейти →</span></div></article>
+          <article class="card small"><div class="content"><div class="icon"><svg viewBox="0 0 24 24"><path d="M20 12v8H4v-8M22 7H2v5h20V7ZM12 22V7M12 7H7.5a2.5 2.5 0 1 1 2.2-3.7L12 7ZM12 7h4.5a2.5 2.5 0 1 0-2.2-3.7L12 7Z"/></svg></div><h3 class="title">Бесплатные ресурсы</h3><p class="desc">Курсы, ассеты, шаблоны.</p><span class="link">Перейти →</span></div></article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

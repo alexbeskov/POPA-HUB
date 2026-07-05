@@ -786,17 +786,6 @@ kbd {
   margin-top: 24px;
 }
 
-.section-card-kicker {
-  display: inline-flex;
-  width: fit-content;
-  margin-bottom: 12px;
-  color: rgba(174, 255, 255, 0.56);
-  font-size: 12px;
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: 0;
-}
-
 .home-hub .section-card h3 {
   max-width: 12ch;
   color: #f3ffff;
@@ -1868,10 +1857,6 @@ kbd {
   .home-hub .section-card {
     min-height: 250px;
     padding: 22px;
-  }
-
-  .section-card-kicker {
-    font-size: 11px;
   }
 
   .home-hub .section-card h3,
