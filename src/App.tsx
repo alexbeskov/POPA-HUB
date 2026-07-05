@@ -726,9 +726,10 @@ function TierListPage({ lang }: { lang: Lang }) {
       <div className="page-panel arena-panel reveal">
         <div className="arena-panel-top">
           <div>
-            <span className="eyebrow compact">
-              {lang === "ru" ? "Arena AI live data" : "Arena AI live data"}
-            </span>
+            <a className="back-link arena-back-link" href={getPageHref("home")}>
+              <ArrowLeft size={17} />
+              {lang === "ru" ? "Назад" : "Back"}
+            </a>
             <h1>{lang === "ru" ? "Тир-лист ИИ" : "AI tier list"}</h1>
             <p>
               {lang === "ru"

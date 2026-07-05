@@ -1437,6 +1437,10 @@ kbd {
   min-height: 620px;
 }
 
+.arena-back-link {
+  margin-bottom: 14px;
+}
+
 .arena-panel-top {
   display: flex;
   align-items: flex-start;
