@@ -11,6 +11,7 @@ import {
   Globe2,
   Menu,
   MessageCircle,
+  ShoppingBag,
   Send,
   Network,
   SquareTerminal,
@@ -25,18 +26,36 @@ import Aurora from "./components/Aurora";
 import CountUp from "./components/CountUp";
 
 type Lang = "ru" | "en";
-type Page = "home" | "tierlist" | "prompts" | "guides" | "services" | "free" | "about";
+type Page =
+  | "home"
+  | "tierlist"
+  | "prompts"
+  | "guides"
+  | "services"
+  | "free"
+  | "marketplace"
+  | "about"
+  | "community";
 
 const AURORA_COLORS: [string, string, string] = ["#75FF67", "#00D6B8", "#126BFF"];
 
 const navItems: Array<{ page: Page; ru: string; en: string }> = [
-  { page: "home", ru: "Home", en: "Home" },
-  { page: "tierlist", ru: "Тир-лист ИИ", en: "AI tier list" },
-  { page: "prompts", ru: "Промпты", en: "Prompts" },
-  { page: "guides", ru: "Гайды", en: "Guides" },
-  { page: "services", ru: "Сервисы", en: "Services" },
-  { page: "free", ru: "Бесплатное", en: "Free" },
+  { page: "home", ru: "Инструменты", en: "Tools" },
+  { page: "marketplace", ru: "Marketplace", en: "Marketplace" },
   { page: "about", ru: "О нас", en: "About" },
+  { page: "community", ru: "Сообщество", en: "Community" },
+];
+
+const pageRoutes: Page[] = [
+  "home",
+  "tierlist",
+  "prompts",
+  "guides",
+  "services",
+  "free",
+  "marketplace",
+  "about",
+  "community",
 ];
 
 const copy = {
@@ -246,6 +265,22 @@ const pageContent: Record<
       cards: ["Free courses", "Project templates", "Design assets", "Launch checklists"],
     },
   },
+  marketplace: {
+    icon: ShoppingBag,
+    tone: "blue",
+    ru: {
+      eyebrow: "RixHub marketplace",
+      title: "Marketplace",
+      text: "Отдельный экран для будущего магазина ресурсов, шаблонов, заказов и наборов для AI-билдинга.",
+      cards: ["Шаблоны проектов", "Паки промптов", "Готовые UI-наборы", "Заказы и услуги"],
+    },
+    en: {
+      eyebrow: "RixHub marketplace",
+      title: "Marketplace",
+      text: "A separate screen for future resources, templates, orders and kits for AI building.",
+      cards: ["Project templates", "Prompt packs", "Ready UI kits", "Orders and services"],
+    },
+  },
   about: {
     icon: Globe2,
     tone: "teal",
@@ -260,6 +295,22 @@ const pageContent: Record<
       title: "About us",
       text: "RixHub will live beyond the website: videos, posts, source files, discussions and fast discoveries for vibe coders.",
       cards: [],
+    },
+  },
+  community: {
+    icon: UsersRound,
+    tone: "violet",
+    ru: {
+      eyebrow: "RixHub community",
+      title: "Сообщество",
+      text: "Место для участников RixHub: новости, обсуждения, разборы проектов и быстрые находки для вайб-кодеров.",
+      cards: ["Новости RixHub", "Разборы проектов", "Посты участников", "Ежедневные AI-находки"],
+    },
+    en: {
+      eyebrow: "RixHub community",
+      title: "Community",
+      text: "A place for RixHub members: news, discussions, project reviews and fast finds for vibe coders.",
+      cards: ["RixHub news", "Project reviews", "Member posts", "Daily AI finds"],
     },
   },
 };
@@ -285,7 +336,7 @@ const footerSocials = [
 
 const getPageFromHash = (): Page => {
   const hash = window.location.hash.replace("#", "") as Page;
-  return navItems.some((item) => item.page === hash) ? hash : "home";
+  return pageRoutes.includes(hash) ? hash : "home";
 };
 
 const getPageHref = (page: Page) => (page === "home" ? "#" : `#${page}`);
