@@ -773,9 +773,34 @@ kbd {
 }
 
 .home-hub .section-card-top .section-icon {
-  width: 62px;
-  height: 62px;
-  border-radius: 20px;
+  width: 34px;
+  height: 34px;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+.home-hub .section-card-top .section-icon svg {
+  width: 28px;
+  height: 28px;
+  filter: none;
+}
+
+.home-hub .section-card:first-child .section-card-top .section-icon,
+.home-hub .section-card.violet .section-card-top .section-icon,
+.home-hub .section-card.blue .section-card-top .section-icon {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.home-hub .section-card:first-child .section-card-top .section-icon svg,
+.home-hub .section-card.violet .section-card-top .section-icon svg,
+.home-hub .section-card.blue .section-card-top .section-icon svg {
+  filter: none;
 }
 
 .home-hub .section-card-number {
