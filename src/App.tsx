@@ -334,6 +334,30 @@ const footerSocials = [
   { label: "Telegram Community", href: "#about", icon: UsersRound },
 ];
 
+type ArenaModel = {
+  rank: number;
+  model: string;
+  lab: string;
+  license: string;
+  score: number;
+  interval: string;
+  votes: string;
+  price: string;
+  context: string;
+};
+
+type ArenaLeaderboard = {
+  source: string;
+  sourceUrl: string;
+  title?: string;
+  updatedAt?: string | null;
+  votes?: string | null;
+  totalModels?: string | null;
+  fetchedAt?: string;
+  error?: string;
+  models: ArenaModel[];
+};
+
 const getPageFromHash = (): Page => {
   const hash = window.location.hash.replace("#", "") as Page;
   return pageRoutes.includes(hash) ? hash : "home";
@@ -499,6 +523,10 @@ function App() {
       return <AboutPage lang={lang} soon={t.soon} back={t.back} />;
     }
 
+    if (activePage === "tierlist") {
+      return <TierListPage lang={lang} />;
+    }
+
     const page = pageContent[activePage];
     const data = page[lang];
     const Icon = page.icon;
@@ -646,6 +674,120 @@ function App() {
         </div>
       </footer>
     </div>
+  );
+}
+
+function TierListPage({ lang }: { lang: Lang }) {
+  const [leaderboard, setLeaderboard] = useState<ArenaLeaderboard | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadArenaLeaderboard = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const response = await fetch("/api/arena-leaderboard");
+        const data = (await response.json()) as ArenaLeaderboard;
+
+        if (!response.ok || data.error) {
+          throw new Error(data.error || "Arena leaderboard is temporarily unavailable");
+        }
+
+        if (isMounted) {
+          setLeaderboard(data);
+        }
+      } catch (loadError) {
+        if (isMounted) {
+          setError(loadError instanceof Error ? loadError.message : "Arena loading error");
+          setLeaderboard(null);
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadArenaLeaderboard();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const modelCount = leaderboard?.models.length ?? 0;
+
+  return (
+    <section className="shell page-view tierlist-page">
+      <div className="page-panel arena-panel reveal">
+        <div className="arena-panel-top">
+          <div>
+            <span className="eyebrow compact">
+              {lang === "ru" ? "Arena AI live data" : "Arena AI live data"}
+            </span>
+            <h1>{lang === "ru" ? "Тир-лист ИИ" : "AI tier list"}</h1>
+            <p>
+              {lang === "ru"
+                ? "Актуальные модели из публичного WebDev-лидерборда Arena для AI-билдинга и вайбкодинга."
+                : "Current models from Arena's public WebDev leaderboard for AI building and vibe coding."}
+            </p>
+          </div>
+          <a
+            className="arena-source-link"
+            href={leaderboard?.sourceUrl || "https://arena.ai/leaderboard/code/webdev"}
+            rel="noreferrer"
+            target="_blank"
+          >
+            Arena
+            <ArrowUpRight size={16} />
+          </a>
+        </div>
+
+        <div className="arena-meta">
+          <span>{leaderboard?.updatedAt || (lang === "ru" ? "загрузка даты" : "loading date")}</span>
+          <span>{leaderboard?.votes ? `${leaderboard.votes} votes` : "votes loading"}</span>
+          <span>{leaderboard?.totalModels ? `${leaderboard.totalModels} models` : `${modelCount} shown`}</span>
+        </div>
+
+        {isLoading ? (
+          <div className="arena-state">
+            {lang === "ru" ? "Загружаю рейтинг Arena..." : "Loading Arena leaderboard..."}
+          </div>
+        ) : error ? (
+          <div className="arena-state warning">
+            {lang === "ru"
+              ? "Arena временно не отдала данные. Попробуй обновить страницу позже."
+              : "Arena data is temporarily unavailable. Try refreshing later."}
+          </div>
+        ) : (
+          <div className="arena-model-list">
+            {leaderboard?.models.map((model) => (
+              <article className="arena-model-card" key={`${model.rank}-${model.model}`}>
+                <span className="arena-rank">{String(model.rank).padStart(2, "0")}</span>
+                <div className="arena-model-main">
+                  <strong>{model.model}</strong>
+                  <span>
+                    {model.lab} / {model.license}
+                  </span>
+                </div>
+                <div className="arena-score">
+                  <strong>{model.score}</strong>
+                  <span>{model.interval}</span>
+                </div>
+                <div className="arena-model-extra">
+                  <span>{model.votes} votes</span>
+                  <span>{model.context}</span>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
   );
 }
 
