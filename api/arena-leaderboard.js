@@ -1,4 +1,5 @@
 const ARENA_WEBDEV_URL = "https://arena.ai/leaderboard/code/webdev";
+const MAX_MODELS = 15;
 
 function decodeHtml(value) {
   return value
@@ -11,9 +12,13 @@ function decodeHtml(value) {
 }
 
 function stripTags(value) {
-  return decodeHtml(value.replace(/<[^>]*>/g, ""))
+  return decodeHtml(value.replace(/<[^>]*>/g, " "))
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function getCells(row) {
+  return row.match(/<td[\s\S]*?<\/td>/g)?.map(stripTags) || [];
 }
 
 function parseArenaHtml(html) {
@@ -25,16 +30,17 @@ function parseArenaHtml(html) {
 
   const models = rows
     .map((row) => {
+      const cells = getCells(row);
       const rankMatch = row.match(/<span class="text-sm font-medium">(\d+)<\/span>/);
       const modelMatch = row.match(/title="([^"]+)"/);
       const labMatch = row.match(/<span class="text-text-secondary truncate text-xs">([\s\S]*?)<\/span>/);
-      const scoreMatch = row.match(/<div class="flex flex-row items-center gap-2 min-w-\[178px\]"><span class="text-sm">([\d,]+)<\/span><span class="text-tertiary text-xs">([^<]+)<\/span>/);
-      const votesCellMatch = row.match(/text-center"><span class="text-sm">([\d,]+)<\/span><\/td>/);
-      const priceMatch = row.match(/<span class="text-sm">(\$[^<]+)<\/span><\/td><td class="[^"]*text-center"><span class="text-sm">([^<]+)<\/span>/);
+      const scoreMatch = row.match(
+        /<div class="flex flex-row items-center gap-2 min-w-\[178px\]"><span class="text-sm">([\d,]+)<\/span><span class="text-tertiary text-xs">([^<]+)<\/span>/,
+      );
 
       if (!rankMatch || !modelMatch || !scoreMatch) return null;
 
-      const labParts = labMatch ? stripTags(labMatch[1]).split(/\s*(?:·|В·)\s*/) : [];
+      const labParts = labMatch ? stripTags(labMatch[1]).split(/\s*\u00b7\s*/) : [];
 
       return {
         rank: Number(rankMatch[1]),
@@ -43,13 +49,13 @@ function parseArenaHtml(html) {
         license: labParts.slice(1).join(" / ") || "N/A",
         score: Number(scoreMatch[1].replace(/,/g, "")),
         interval: scoreMatch[2],
-        votes: votesCellMatch ? votesCellMatch[1] : "N/A",
-        price: priceMatch ? stripTags(priceMatch[1]) : "N/A",
-        context: priceMatch ? stripTags(priceMatch[2]) : "N/A",
+        votes: cells[4] || "N/A",
+        price: cells[5] || "N/A",
+        context: cells[6] || "N/A",
       };
     })
     .filter(Boolean)
-    .slice(0, 8);
+    .slice(0, MAX_MODELS);
 
   return {
     source: "Arena WebDev Leaderboard",

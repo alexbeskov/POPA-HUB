@@ -779,8 +779,9 @@ function TierListPage({ lang }: { lang: Lang }) {
                   <span>{model.interval}</span>
                 </div>
                 <div className="arena-model-extra">
-                  <span>{model.votes} votes</span>
-                  <span>{model.context}</span>
+                  <span>{lang === "ru" ? "Голоса" : "Votes"}: {model.votes}</span>
+                  <span>{lang === "ru" ? "Цена" : "Price"}: {model.price}</span>
+                  <span>{lang === "ru" ? "Контекст" : "Context"}: {model.context}</span>
                 </div>
               </article>
             ))}
