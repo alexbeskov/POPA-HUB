@@ -762,14 +762,14 @@ kbd {
 }
 
 .home-hub .section-card {
-  min-height: 230px;
-  padding: 26px;
+  min-height: 252px;
+  padding: 28px;
   border-radius: 28px;
 }
 
 .home-hub .section-card:nth-child(1),
 .home-hub .section-card:nth-child(2) {
-  min-height: 264px;
+  min-height: 286px;
 }
 
 .home-hub .section-card-top .section-icon {
@@ -779,34 +779,64 @@ kbd {
 }
 
 .home-hub .section-card-body {
-  margin-top: 30px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.section-card-kicker {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 12px;
+  color: rgba(174, 255, 255, 0.56);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
 }
 
 .home-hub .section-card h3 {
-  font-size: clamp(24px, 2.1vw, 32px);
-  line-height: 1.02;
+  max-width: 12ch;
+  color: #f3ffff;
+  font-size: 36px;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.home-hub .section-card:nth-child(1) h3,
+.home-hub .section-card:nth-child(2) h3 {
+  font-size: 44px;
+}
+
+.home-hub .section-card:nth-child(5) h3 {
+  max-width: 15ch;
+  font-size: 34px;
 }
 
 .home-hub .section-card p {
-  margin-top: 14px;
-  font-size: 15px;
+  max-width: 48ch;
+  margin-top: 16px;
+  color: rgba(190, 210, 220, 0.88);
+  font-size: 16px;
   line-height: 1.48;
   opacity: 0;
-  transform: translate3d(0, 14px, 0);
+  transform: translate3d(0, 16px, 0);
   filter: blur(7px);
   transition:
-    opacity 260ms ease,
-    transform 260ms ease,
-    filter 260ms ease;
+    opacity 320ms ease,
+    transform 320ms ease,
+    filter 320ms ease;
 }
 
 .home-hub .section-card-action {
-  min-height: 34px;
+  min-height: 30px;
   padding: 0 4px;
   border: 0;
   background: transparent;
-  color: rgba(174, 255, 255, 0.64);
-  font-size: 13px;
+  color: rgba(174, 255, 255, 0.52);
+  font-size: 12px;
   box-shadow: none;
 }
 
@@ -1682,7 +1712,15 @@ kbd {
   }
 
   .home-hub .section-card {
-    min-height: 260px;
+    min-height: 250px;
+  }
+
+  .home-hub .section-card h3,
+  .home-hub .section-card:nth-child(1) h3,
+  .home-hub .section-card:nth-child(2) h3,
+  .home-hub .section-card:nth-child(5) h3 {
+    max-width: 13ch;
+    font-size: 34px;
   }
 
   .page-layout {
@@ -1830,6 +1868,23 @@ kbd {
   .home-hub .section-card {
     min-height: 250px;
     padding: 22px;
+  }
+
+  .section-card-kicker {
+    font-size: 11px;
+  }
+
+  .home-hub .section-card h3,
+  .home-hub .section-card:nth-child(1) h3,
+  .home-hub .section-card:nth-child(2) h3,
+  .home-hub .section-card:nth-child(5) h3 {
+    max-width: 14ch;
+    font-size: 31px;
+    line-height: 1;
+  }
+
+  .home-hub .section-card p {
+    font-size: 15px;
   }
 
   .quick-card {

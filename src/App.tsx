@@ -316,6 +316,17 @@ const pageContent: Record<
 };
 
 const icons = [Trophy, SquareTerminal, BookOpenText, Network, Gift];
+const sectionMeta: Record<Page, { ru: string; en: string }> = {
+  home: { ru: "HUB", en: "HUB" },
+  tierlist: { ru: "AI RANKING", en: "AI RANKING" },
+  prompts: { ru: "PROMPT GUIDE", en: "PROMPT GUIDE" },
+  guides: { ru: "BUILD ROUTE", en: "BUILD ROUTE" },
+  services: { ru: "SERVICE STACK", en: "SERVICE STACK" },
+  free: { ru: "FREE START", en: "FREE START" },
+  marketplace: { ru: "MARKET", en: "MARKET" },
+  about: { ru: "SOCIAL", en: "SOCIAL" },
+  community: { ru: "COMMUNITY", en: "COMMUNITY" },
+};
 const socialLinks = [
   { label: "YouTube", icon: Youtube },
   { label: "Telegram", icon: Send },
@@ -470,6 +481,9 @@ function App() {
                   </span>
                 </div>
                 <div className="section-card-body">
+                  <span className="section-card-kicker">
+                    {sectionMeta[page][lang]}
+                  </span>
                   <h3>{title}</h3>
                   <p>{text}</p>
                 </div>
