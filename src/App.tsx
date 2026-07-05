@@ -435,23 +435,12 @@ function App() {
           <div className="section-heading reveal">
             <div>
               <h2>{t.sectionsTitle}</h2>
+              <p>
+                {lang === "ru"
+                  ? "Всё, что нужно для прокачки навыков и автоматизации работы"
+                  : "Everything you need to level up skills and automate work"}
+              </p>
             </div>
-          </div>
-
-          <div className="metrics home-metrics reveal delay-2" aria-label="RixHub stats">
-            {t.stats.map(([value, label], index) => (
-              <a
-                className="metric"
-                href="#tierlist"
-                key={label}
-                style={{ "--reveal-delay": `${220 + index * 70}ms` } as React.CSSProperties}
-              >
-                <strong>
-                  <AnimatedMetricValue value={value} index={index} />
-                </strong>
-                <span>{label}</span>
-              </a>
-            ))}
           </div>
 
           <div className="section-grid">
@@ -480,6 +469,22 @@ function App() {
                   {lang === "ru" ? "Перейти" : "Open"}
                   <ArrowUpRight size={15} />
                 </span>
+              </a>
+            ))}
+          </div>
+
+          <div className="metrics home-metrics reveal delay-5" aria-label="RixHub stats">
+            {t.stats.map(([value, label], index) => (
+              <a
+                className="metric"
+                href="#tierlist"
+                key={label}
+                style={{ "--reveal-delay": `${620 + index * 70}ms` } as React.CSSProperties}
+              >
+                <strong>
+                  <AnimatedMetricValue value={value} index={index} />
+                </strong>
+                <span>{label}</span>
               </a>
             ))}
           </div>
