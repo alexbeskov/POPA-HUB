@@ -527,6 +527,10 @@ function App() {
       return <TierListPage lang={lang} />;
     }
 
+    if (activePage === "marketplace" || activePage === "community") {
+      return <section className="shell blank-page" aria-hidden="true" />;
+    }
+
     const page = pageContent[activePage];
     const data = page[lang];
     const Icon = page.icon;

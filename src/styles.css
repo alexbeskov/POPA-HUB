@@ -1306,6 +1306,11 @@ kbd {
   padding: 78px 0 92px;
 }
 
+.blank-page {
+  min-height: calc(100vh - 360px);
+  padding: 42px 0 0;
+}
+
 .back-link {
   display: inline-flex;
   align-items: center;
