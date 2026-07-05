@@ -719,8 +719,6 @@ function TierListPage({ lang }: { lang: Lang }) {
     };
   }, []);
 
-  const modelCount = leaderboard?.models.length ?? 0;
-
   return (
     <section className="shell page-view tierlist-page">
       <div className="page-panel arena-panel reveal">
@@ -737,21 +735,6 @@ function TierListPage({ lang }: { lang: Lang }) {
                 : "Current models from Arena's public WebDev leaderboard for AI building and vibe coding."}
             </p>
           </div>
-          <a
-            className="arena-source-link"
-            href={leaderboard?.sourceUrl || "https://arena.ai/leaderboard/code/webdev"}
-            rel="noreferrer"
-            target="_blank"
-          >
-            Arena
-            <ArrowUpRight size={16} />
-          </a>
-        </div>
-
-        <div className="arena-meta">
-          <span>{leaderboard?.updatedAt || (lang === "ru" ? "загрузка даты" : "loading date")}</span>
-          <span>{leaderboard?.votes ? `${leaderboard.votes} votes` : "votes loading"}</span>
-          <span>{leaderboard?.totalModels ? `${leaderboard.totalModels} models` : `${modelCount} shown`}</span>
         </div>
 
         {isLoading ? (
