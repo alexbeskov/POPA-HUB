@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import {
   ArrowLeft,
   ArrowUpRight,
@@ -38,6 +39,7 @@ type Page =
   | "community";
 
 const AURORA_COLORS: [string, string, string] = ["#75FF67", "#00D6B8", "#126BFF"];
+const SITE_URL = "https://code-phi-lime.vercel.app";
 
 const navItems: Array<{ page: Page; ru: string; en: string }> = [
   { page: "home", ru: "Инструменты", en: "Tools" },
@@ -315,6 +317,54 @@ const pageContent: Record<
   },
 };
 
+const pageMeta: Record<Page, { title: string; description: string; keywords: string }> = {
+  home: {
+    title: "RixHub — AI-инструменты, промпты и гайды для вайбкодинга",
+    description: "AI-хаб для вайбкодинга: 438+ инструментов, 120+ промптов, 24 гайда. Собирай MVP быстрее с искусственным интеллектом.",
+    keywords: "AI, вайбкодинг, промпты, гайды, инструменты, MVP, no-code, vibe coding, искусственный интеллект",
+  },
+  tierlist: {
+    title: "Тир-лист ИИ — рейтинг моделей для кода и дизайна | RixHub",
+    description: "Актуальный рейтинг AI-моделей для вайбкодинга: сравнение моделей, IDE, агентов и инструментов для разработки.",
+    keywords: "AI tier list, рейтинг ИИ, модели для кода, vibe coding, AI IDE, агенты, сравнение ИИ",
+  },
+  prompts: {
+    title: "Промпты для AI — готовые запросы для разработки и дизайна | RixHub",
+    description: "Библиотека готовых промптов для UI, архитектуры, контента, тестов и автоматизации. Копируй и используй.",
+    keywords: "промпты, prompts, AI запросы, промпты для разработки, промпты для дизайна, ChatGPT prompts",
+  },
+  guides: {
+    title: "Гайды по вайбкодингу — от идеи до MVP | RixHub",
+    description: "Пошаговые маршруты для тех, кто хочет научиться вайбкодить и быстрее собирать MVP с AI.",
+    keywords: "гайды, вайбкодинг обучение, vibe coding tutorial, как собрать MVP, обучение AI",
+  },
+  services: {
+    title: "AI-сервисы и API — каталог инструментов для билдинга | RixHub",
+    description: "Каталог AI-сервисов, API, no-code инструментов и boilerplate-наборов для быстрого создания проектов.",
+    keywords: "AI сервисы, API, no-code, boilerplate, инструменты для разработки, UI builders",
+  },
+  free: {
+    title: "Бесплатные ресурсы для AI-билдинга — курсы, шаблоны, ассеты | RixHub",
+    description: "Бесплатные курсы, шаблоны проектов, дизайн-ассеты и чеклисты для запуска без бюджета.",
+    keywords: "бесплатные ресурсы, шаблоны проектов, дизайн ассеты, чеклисты, бесплатные курсы AI",
+  },
+  marketplace: {
+    title: "Marketplace — шаблоны, паки промптов и UI-наборы | RixHub",
+    description: "Магазин ресурсов для AI-билдинга: шаблоны проектов, паки промптов, готовые UI-наборы и услуги.",
+    keywords: "marketplace, шаблоны проектов, паки промптов, UI-наборы, AI услуги",
+  },
+  about: {
+    title: "О RixHub — AI-хаб для вайб-кодеров",
+    description: "RixHub — это сообщество и платформа для тех, кто учится вайбкодить и быстрее запускать проекты с AI.",
+    keywords: "RixHub, о нас, vibe coding community, AI хаб, вайбкодинг сообщество",
+  },
+  community: {
+    title: "Сообщество RixHub — новости, обсуждения, разборы проектов",
+    description: "Присоединяйся к сообществу RixHub: новости, обсуждения, разборы проектов и ежедневные AI-находки.",
+    keywords: "сообщество RixHub, AI новости, разборы проектов, vibe coding community",
+  },
+};
+
 const icons = [Trophy, SquareTerminal, BookOpenText, Network, Gift];
 const socialLinks = [
   { label: "YouTube", icon: Youtube },
@@ -358,12 +408,42 @@ type ArenaLeaderboard = {
   models: ArenaModel[];
 };
 
-const getPageFromHash = (): Page => {
-  const hash = window.location.hash.replace("#", "") as Page;
-  return pageRoutes.includes(hash) ? hash : "home";
+const getPageFromPath = (): Page => {
+  const path = window.location.pathname.replace(/^\/|\/$/g, "") as Page;
+  return pageRoutes.includes(path) ? path : "home";
 };
 
-const getPageHref = (page: Page) => (page === "home" ? "#" : `#${page}`);
+const getPageHref = (page: Page) => (page === "home" ? "/" : `/${page}`);
+
+function navigate(page: Page) {
+  const href = getPageHref(page);
+  window.history.pushState({}, "", href);
+  window.dispatchEvent(new PopStateEvent("popstate"));
+}
+
+function Link({
+  page,
+  children,
+  className,
+  style,
+  "aria-label": ariaLabel,
+}: {
+  page: Page;
+  children: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+  "aria-label"?: string;
+}) {
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigate(page);
+  };
+  return (
+    <a href={getPageHref(page)} className={className} style={style} onClick={handleClick} aria-label={ariaLabel}>
+      {children}
+    </a>
+  );
+}
 
 function AnimatedTitle({ text }: { text: string }) {
   return (
@@ -413,8 +493,9 @@ function App() {
   const [lang, setLang] = useState<Lang>("ru");
   const [menuOpen, setMenuOpen] = useState(false);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
-  const [activePage, setActivePage] = useState<Page>(getPageFromHash);
+  const [activePage, setActivePage] = useState<Page>(getPageFromPath);
   const t = copy[lang];
+  const meta = pageMeta[activePage];
 
   const sections = useMemo(
     () => t.categories.map((category, index) => ({ ...category, icon: icons[index] })),
@@ -431,24 +512,24 @@ function App() {
     const previousScrollRestoration = window.history.scrollRestoration;
     window.history.scrollRestoration = "manual";
 
-    if (window.location.hash === "#home") {
-      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    if (window.location.pathname === "/home") {
+      window.history.replaceState(null, "", window.location.pathname.replace("/home", "/") + window.location.search);
     }
 
     const syncPage = () => {
-      setActivePage(getPageFromHash());
+      setActivePage(getPageFromPath());
       setMenuOpen(false);
       window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
-    const initialPage = getPageFromHash();
+    const initialPage = getPageFromPath();
     setActivePage(initialPage);
     setMenuOpen(false);
 
-    window.addEventListener("hashchange", syncPage);
+    window.addEventListener("popstate", syncPage);
     return () => {
       window.history.scrollRestoration = previousScrollRestoration;
-      window.removeEventListener("hashchange", syncPage);
+      window.removeEventListener("popstate", syncPage);
     };
   }, []);
 
@@ -469,11 +550,11 @@ function App() {
 
           <div className="section-grid">
             {sections.map(({ title, text, icon: Icon, page }, index) => (
-              <a
+              <Link
                 className={`section-card reveal ${
                   index === 1 ? "violet" : index === 3 ? "blue" : "teal"
                 }`}
-                href={`#${page}`}
+                page={page}
                 key={title}
                 style={{ "--reveal-delay": `${160 + index * 90}ms` } as React.CSSProperties}
               >
@@ -493,15 +574,15 @@ function App() {
                   {lang === "ru" ? "Перейти" : "Open"}
                   <ArrowUpRight size={15} />
                 </span>
-              </a>
+              </Link>
             ))}
           </div>
 
           <div className="metrics home-metrics reveal delay-5" aria-label="RixHub stats">
             {t.stats.map(([value, label], index) => (
-              <a
+              <Link
                 className="metric"
-                href="#tierlist"
+                page="tierlist"
                 key={label}
                 style={{ "--reveal-delay": `${620 + index * 70}ms` } as React.CSSProperties}
               >
@@ -509,12 +590,11 @@ function App() {
                   <AnimatedMetricValue value={value} index={index} />
                 </strong>
                 <span>{label}</span>
-              </a>
+              </Link>
             ))}
           </div>
         </div>
       </section>
-
     </>
   );
 
@@ -537,10 +617,10 @@ function App() {
 
     return (
       <section className="shell page-view">
-        <a className="back-link" href={getPageHref("home")}>
+        <Link className="back-link" page="home">
           <ArrowLeft size={17} />
           {t.back}
-        </a>
+        </Link>
         <div className={`page-hero reveal ${page.tone}`}>
           <span className="page-icon">
             <Icon size={30} />
@@ -572,10 +652,10 @@ function App() {
                 ? "Сейчас это отдельная страница-заготовка. Потом сюда можно добавить фильтры, поиск, карточки материалов и реальные ссылки."
                 : "This is a separate starter screen now. Later we can add filters, search, resource cards and real links here."}
             </p>
-            <a className="secondary-button" href="#about">
+            <Link className="secondary-button" page="about">
               {lang === "ru" ? "Перейти в О нас" : "Open About"}
               <ArrowUpRight size={17} />
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -584,6 +664,20 @@ function App() {
 
   return (
     <div className="app">
+      <Helmet>
+        <title>{meta.title}</title>
+        <meta name="description" content={meta.description} />
+        <meta name="keywords" content={meta.keywords} />
+        <link rel="canonical" href={`${SITE_URL}${getPageHref(activePage)}`} />
+        <meta property="og:title" content={meta.title} />
+        <meta property="og:description" content={meta.description} />
+        <meta property="og:url" content={`${SITE_URL}${getPageHref(activePage)}`} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={meta.title} />
+        <meta name="twitter:description" content={meta.description} />
+      </Helmet>
+
       <div
         className="cursor"
         style={{ transform: `translate3d(${cursor.x}px, ${cursor.y}px, 0)` }}
@@ -603,22 +697,22 @@ function App() {
       </div>
 
       <header className="shell header">
-        <a className="brand" href={getPageHref("home")} aria-label="RixHub home">
+        <Link className="brand" page="home" aria-label="RixHub home">
           <span className="brand-mark">
             <Code2 size={18} />
           </span>
           RixHub
-        </a>
+        </Link>
 
         <nav className={menuOpen ? "nav open" : "nav"} aria-label="Primary navigation">
           {navItems.map((item) => (
-            <a
-              className={activePage === item.page ? "active" : ""}
-              href={getPageHref(item.page)}
+            <Link
               key={item.page}
+              page={item.page}
+              className={activePage === item.page ? "active" : ""}
             >
               {lang === "ru" ? item.ru : item.en}
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -646,10 +740,10 @@ function App() {
       <footer className="shell footer">
         <div className="footer-main">
           <div className="footer-brand">
-            <a className="footer-logo" href={getPageHref("home")}>
+            <Link className="footer-logo" page="home">
               <Code2 size={18} />
               <span>RixHub</span>
-            </a>
+            </Link>
             <p>
               {lang === "ru"
                 ? "Твоя панель старта в AI-билдинг."
@@ -728,10 +822,10 @@ function TierListPage({ lang }: { lang: Lang }) {
       <div className="page-panel arena-panel reveal">
         <div className="arena-panel-top">
           <div>
-            <a className="back-link arena-back-link" href={getPageHref("home")}>
+            <Link className="back-link arena-back-link" page="home">
               <ArrowLeft size={17} />
               {lang === "ru" ? "Назад" : "Back"}
-            </a>
+            </Link>
             <h1>{lang === "ru" ? "Тир-лист ИИ" : "AI tier list"}</h1>
             <p>
               {lang === "ru"
@@ -785,10 +879,10 @@ function AboutPage({ lang, soon, back }: { lang: Lang; soon: string; back: strin
 
   return (
     <section className="shell page-view about-page">
-      <a className="back-link" href={getPageHref("home")}>
+      <Link className="back-link" page="home">
         <ArrowLeft size={17} />
         {back}
-      </a>
+      </Link>
       <div className="page-hero teal">
         <span className="page-icon">
           <Globe2 size={30} />
