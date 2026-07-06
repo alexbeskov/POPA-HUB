@@ -207,6 +207,13 @@ button {
   align-items: center;
 }
 
+.brand-logo {
+  width: 110px;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+}
+
 .brand {
   gap: 11px;
   font-size: 22px;
@@ -1627,6 +1634,13 @@ kbd {
 .footer-logo svg {
   color: #75ff67;
   filter: drop-shadow(0 0 12px rgba(117, 255, 103, 0.35));
+}
+
+.footer-logo-img {
+  width: 100px;
+  height: auto;
+  display: block;
+  border-radius: 8px;
 }
 
 .footer-brand p {

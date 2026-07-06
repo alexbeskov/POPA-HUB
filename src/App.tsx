@@ -698,10 +698,7 @@ function App() {
 
       <header className="shell header">
         <Link className="brand" page="home" aria-label="RixHub home">
-          <span className="brand-mark">
-            <Code2 size={18} />
-          </span>
-          RixHub
+          <img src="/logo.png" alt="RIX" className="brand-logo" />
         </Link>
 
         <nav className={menuOpen ? "nav open" : "nav"} aria-label="Primary navigation">
@@ -741,8 +738,7 @@ function App() {
         <div className="footer-main">
           <div className="footer-brand">
             <Link className="footer-logo" page="home">
-              <Code2 size={18} />
-              <span>RixHub</span>
+              <img src="/logo.png" alt="RIX" className="footer-logo-img" />
             </Link>
             <p>
               {lang === "ru"
