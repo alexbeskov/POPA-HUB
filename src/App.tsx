@@ -389,23 +389,32 @@ type ArenaModel = {
   model: string;
   lab: string;
   license: string;
-  score: number;
+  score: string;
   interval: string;
   votes: string;
   price: string;
   context: string;
+  metrics?: Array<{ label: string; value: string }>;
 };
 
 type ArenaLeaderboard = {
-  source: string;
+  id: string;
+  label: string;
+  labelRu: string;
   sourceUrl: string;
   title?: string;
   updatedAt?: string | null;
   votes?: string | null;
   totalModels?: string | null;
+  models: ArenaModel[];
+};
+
+type ArenaResponse = {
+  source: string;
   fetchedAt?: string;
   error?: string;
-  models: ArenaModel[];
+  errors?: string[];
+  leaderboards: ArenaLeaderboard[];
 };
 
 const getPageFromPath = (): Page => {
@@ -772,7 +781,8 @@ function App() {
 }
 
 function TierListPage({ lang }: { lang: Lang }) {
-  const [leaderboard, setLeaderboard] = useState<ArenaLeaderboard | null>(null);
+  const [arenaData, setArenaData] = useState<ArenaResponse | null>(null);
+  const [activeBoardId, setActiveBoardId] = useState("webdev");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -785,19 +795,24 @@ function TierListPage({ lang }: { lang: Lang }) {
         setError(null);
 
         const response = await fetch("/api/arena-leaderboard");
-        const data = (await response.json()) as ArenaLeaderboard;
+        const data = (await response.json()) as ArenaResponse;
 
-        if (!response.ok || data.error) {
-          throw new Error(data.error || "Arena leaderboard is temporarily unavailable");
+        if (!response.ok || data.error || !data.leaderboards.length) {
+          throw new Error(data.error || "Arena leaderboards are temporarily unavailable");
         }
 
         if (isMounted) {
-          setLeaderboard(data);
+          setArenaData(data);
+          setActiveBoardId((currentId) =>
+            data.leaderboards.some((board) => board.id === currentId)
+              ? currentId
+              : data.leaderboards[0].id,
+          );
         }
       } catch (loadError) {
         if (isMounted) {
           setError(loadError instanceof Error ? loadError.message : "Arena loading error");
-          setLeaderboard(null);
+          setArenaData(null);
         }
       } finally {
         if (isMounted) {
@@ -813,6 +828,10 @@ function TierListPage({ lang }: { lang: Lang }) {
     };
   }, []);
 
+  const leaderboards = arenaData?.leaderboards ?? [];
+  const activeBoard =
+    leaderboards.find((board) => board.id === activeBoardId) || leaderboards[0] || null;
+
   return (
     <section className="shell page-view tierlist-page">
       <div className="page-panel arena-panel reveal">
@@ -825,15 +844,15 @@ function TierListPage({ lang }: { lang: Lang }) {
             <h1>{lang === "ru" ? "Тир-лист ИИ" : "AI tier list"}</h1>
             <p>
               {lang === "ru"
-                ? "Актуальные модели из публичного WebDev-лидерборда Arena для AI-билдинга и вайбкодинга."
-                : "Current models from Arena's public WebDev leaderboard for AI building and vibe coding."}
+                ? "Топ-15 лидеров из публичных лидербордов Arena: код, chat/text, поиск, vision, документы, изображения и видео."
+                : "Top 15 leaders from Arena public leaderboards: code, chat/text, search, vision, documents, image and video."}
             </p>
           </div>
         </div>
 
         {isLoading ? (
           <div className="arena-state">
-            {lang === "ru" ? "Загружаю рейтинг Arena..." : "Loading Arena leaderboard..."}
+            {lang === "ru" ? "Загружаю рейтинги Arena..." : "Loading Arena leaderboards..."}
           </div>
         ) : error ? (
           <div className="arena-state warning">
@@ -841,30 +860,59 @@ function TierListPage({ lang }: { lang: Lang }) {
               ? "Arena временно не отдала данные. Попробуй обновить страницу позже."
               : "Arena data is temporarily unavailable. Try refreshing later."}
           </div>
-        ) : (
-          <div className="arena-model-list">
-            {leaderboard?.models.map((model) => (
-              <article className="arena-model-card" key={`${model.rank}-${model.model}`}>
-                <span className="arena-rank">{String(model.rank).padStart(2, "0")}</span>
-                <div className="arena-model-main">
-                  <strong>{model.model}</strong>
-                  <span>
-                    {model.lab} / {model.license}
-                  </span>
-                </div>
-                <div className="arena-score">
-                  <strong>{model.score}</strong>
-                  <span>{model.interval}</span>
-                </div>
-                <div className="arena-model-extra">
-                  <span>{lang === "ru" ? "Голоса" : "Votes"}: {model.votes}</span>
-                  <span>{lang === "ru" ? "Цена" : "Price"}: {model.price}</span>
-                  <span>{lang === "ru" ? "Контекст" : "Context"}: {model.context}</span>
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
+        ) : activeBoard ? (
+          <>
+            <div className="arena-board-tabs" aria-label="Arena leaderboard sections">
+              {leaderboards.map((board) => (
+                <button
+                  className={board.id === activeBoard.id ? "active" : ""}
+                  key={board.id}
+                  onClick={() => setActiveBoardId(board.id)}
+                  type="button"
+                >
+                  {lang === "ru" ? board.labelRu : board.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="arena-board-heading">
+              <strong>{lang === "ru" ? activeBoard.labelRu : activeBoard.label}</strong>
+              <span>{activeBoard.models.length} / 15</span>
+            </div>
+
+            <div className="arena-model-list">
+              {activeBoard.models.map((model) => (
+                <article className="arena-model-card" key={`${activeBoard.id}-${model.rank}-${model.model}`}>
+                  <span className="arena-rank">{String(model.rank).padStart(2, "0")}</span>
+                  <div className="arena-model-main">
+                    <strong>{model.model}</strong>
+                    <span>
+                      {model.lab} / {model.license}
+                    </span>
+                  </div>
+                  <div className="arena-score">
+                    <strong>{model.score}</strong>
+                    <span>{model.interval || "score"}</span>
+                  </div>
+                  <div className="arena-model-extra">
+                    <span>{lang === "ru" ? "Голоса" : "Votes"}: {model.votes}</span>
+                    {model.price !== "N/A" ? (
+                      <span>{lang === "ru" ? "Цена" : "Price"}: {model.price}</span>
+                    ) : null}
+                    {model.context !== "N/A" ? (
+                      <span>{lang === "ru" ? "Контекст" : "Context"}: {model.context}</span>
+                    ) : null}
+                    {model.metrics?.slice(1, 3).map((metric) => (
+                      <span key={metric.label}>
+                        {metric.label}: {metric.value}
+                      </span>
+                    ))}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </>
+        ) : null}
       </div>
     </section>
   );

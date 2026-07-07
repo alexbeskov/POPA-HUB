@@ -1476,6 +1476,61 @@ kbd {
   line-height: 1.5;
 }
 
+.arena-board-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 28px 0 18px;
+}
+
+.arena-board-tabs button {
+  min-height: 38px;
+  padding: 0 13px;
+  border: 1px solid rgba(174, 239, 255, 0.12);
+  border-radius: 999px;
+  color: rgba(200, 220, 230, 0.74);
+  background: rgba(255, 255, 255, 0.035);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.arena-board-tabs button:hover,
+.arena-board-tabs button.active {
+  transform: translateY(-1px);
+  border-color: rgba(40, 238, 223, 0.34);
+  color: #061214;
+  background: #28eedf;
+  box-shadow: 0 14px 34px rgba(40, 238, 223, 0.18);
+}
+
+.arena-board-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.arena-board-heading strong {
+  color: #f3ffff;
+  font-size: 19px;
+  font-weight: 950;
+}
+
+.arena-board-heading span {
+  color: rgba(160, 180, 192, 0.78);
+  font-size: 12px;
+  font-weight: 850;
+}
+
 .arena-state {
   display: grid;
   min-height: 260px;
@@ -2031,6 +2086,21 @@ kbd {
 
   .arena-panel-top h1 {
     font-size: 40px;
+  }
+
+  .arena-board-tabs {
+    gap: 8px;
+  }
+
+  .arena-board-tabs button {
+    flex: 1 1 calc(50% - 8px);
+    padding: 0 10px;
+  }
+
+  .arena-board-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
   }
 
   .arena-model-card {
