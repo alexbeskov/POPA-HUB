@@ -44,8 +44,8 @@ const SITE_URL = "https://code-phi-lime.vercel.app";
 const navItems: Array<{ page: Page; ru: string; en: string }> = [
   { page: "home", ru: "Инструменты", en: "Tools" },
   { page: "marketplace", ru: "Marketplace", en: "Marketplace" },
-  { page: "about", ru: "О нас", en: "About" },
   { page: "community", ru: "Сообщество", en: "Community" },
+  { page: "about", ru: "О нас", en: "About" },
 ];
 
 const pageRoutes: Page[] = [
@@ -156,7 +156,7 @@ const copy = {
       {
         page: "free" as Page,
         title: "Free resources",
-        text: "Courses, templates, assets and checklists you can start with for free.",
+        text: "Courses, templates, assets, checklists and kits you can start with for free.",
         action: "Grab",
       },
     ],
